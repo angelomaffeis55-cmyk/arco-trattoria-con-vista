@@ -1,6 +1,6 @@
 import React from 'react';
 import { ChevronDown, MapPin } from 'lucide-react';
-import { HERO_VIDEO, HERO_IMG, RESTAURANT } from './data';
+import { LOGO_IMG, RESTAURANT } from './data';
 import { useReservation } from './ReservationContext';
 
 export default function Hero() {
@@ -8,18 +8,11 @@ export default function Hero() {
   return (
     <section id="top" className="relative h-[100svh] min-h-[640px] w-full overflow-hidden">
       {/* Background */}
-      <div className="absolute inset-0">
-        <video
-          className="h-full w-full object-cover"
-          autoPlay
-          loop
-          muted
-          playsInline
-          poster={HERO_IMG}
-        >
-          <source src={HERO_VIDEO} type="video/mp4" />
-        </video>
-        <div className="absolute inset-0 bg-gradient-to-b from-black/40 via-black/20 to-black/60" />
+      <div className="absolute inset-0 bg-foreground">
+        <div className="absolute left-1/2 top-1/2 -translate-x-1/2 -translate-y-1/2 w-[60vw] max-w-md aspect-square rounded-full overflow-hidden opacity-95">
+          <img src={LOGO_IMG} alt="Arco" className="h-full w-full object-cover" />
+        </div>
+        <div className="absolute inset-0 bg-gradient-to-b from-black/50 via-black/45 to-black/65" />
         <div className="absolute inset-0 bg-gradient-to-t from-background/70 via-transparent to-transparent" />
       </div>
 
