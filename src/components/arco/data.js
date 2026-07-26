@@ -8,7 +8,7 @@ export const HERO_IMG = "https://media.base44.com/images/public/6a66623b13a5257c
 
 export const LOGO_IMG = "https://media.base44.com/images/public/6a66623b13a5257cb6038200/041b27e58_IMG_2254.jpeg";
 
-export const HERO_DISH_IMG = "https://media.base44.com/images/public/6a66623b13a5257cb6038200/a8d67b8fe_IMG_2253.png";
+export const HERO_DISH_IMG = "https://media.base44.com/images/public/6a66623b13a5257cb6038200/3a73eb5f7_IMG_2256.jpg";
 
 export const HERO_VIDEO = "https://media.base44.com/videos/public/6a66623b13a5257cb6038200/775df95b5_SnapInstato_AQN1Qn5s5cJs0Qa1izuMYe8-wWR50ZXFvrKQ_je7IMzo-M88qIpZBcDM7GCp0Bow7A3kzZry6Gxpowu_U8HXqpthGKsuDgH98fDc3q0.mp4";
 
