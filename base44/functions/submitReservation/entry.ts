@@ -39,8 +39,8 @@ export default async function(req) {
     // Link di conferma/rifiuto firmati per il proprietario
     const token = await signReservationId(reservation.id);
     const base = req.headers.get('origin') || new URL(req.url).origin;
-    const confirmLink = `${base}/functions/confirmReservation?id=${reservation.id}&t=${token}&action=confirm`;
-    const cancelLink = `${base}/functions/confirmReservation?id=${reservation.id}&t=${token}&action=cancel`;
+    const confirmLink = `${base}/conferma?id=${reservation.id}&t=${token}&action=confirm`;
+    const cancelLink = `${base}/conferma?id=${reservation.id}&t=${token}&action=cancel`;
 
     // Notifica al proprietario
     const ownerHtml = `

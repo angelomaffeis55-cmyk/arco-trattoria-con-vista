@@ -13,53 +13,33 @@ async function sendEmail(apiKey, payload) {
   });
 }
 
-function page(title, message, color) {
-  const html = `<!doctype html><html lang="it"><head><meta charset="utf-8"><meta name="viewport" content="width=device-width, initial-scale=1"><title>${title} — Arco</title></head>
-<body style="margin:0; background:#f9f7f2; font-family: Georgia, serif;">
-<div style="max-width:480px; margin:60px auto; background:#fff; border-radius:16px; padding:48px 40px; text-align:center; box-shadow:0 8px 30px rgba(0,0,0,0.06);">
-  <p style="font-size:11px; letter-spacing:0.4em; text-transform:uppercase; color:${color}; margin:0 0 8px;">Arco Trattoria con Vista</p>
-  <h1 style="color:${color}; font-size:30px; margin:0 0 16px;">${title}</h1>
-  <p style="font-family: Montserrat, sans-serif; font-size:15px; line-height:1.6; color:#3f3a33; margin:0;">${message}</p>
-</div>
-</body></html>`;
-  return new Response(html, { headers: { 'Content-Type': 'text/html; charset=utf-8' } });
-}
-
 export default async function(req) {
   try {
-    const url = new URL(req.url);
-    let id = url.searchParams.get('id');
-    let token = url.searchParams.get('t');
-    let action = url.searchParams.get('action');
-    if (!id || !token) {
-      const body = await req.json().catch(() => ({}));
-      id = id || body.id;
-      token = token || body.t;
-      action = action || body.action;
-    }
-    action = action === 'cancel' ? 'cancel' : 'confirm';
+    const body = await req.json().catch(() => ({}));
+    const id = body.id;
+    const token = body.t;
+    const action = body.action === 'cancel' ? 'cancel' : 'confirm';
 
-    if (!id || !token) return page('Link non valido', 'Il link non contiene i dati necessari.', '#a1491d');
-    if (!(await verifyReservationId(id, token))) {
-      return page('Link non valido', 'Il link di conferma non è valido o è stato manomesso.', '#a1491d');
-    }
+    if (!id || !token) return Response.json({ ok: false, code: 'missing' });
+    if (!(await verifyReservationId(id, token))) return Response.json({ ok: false, code: 'invalid' });
 
     const base44 = createClientFromRequest(req);
     const reservation = await base44.asServiceRole.entities.Reservation.get(id);
-    if (!reservation) return page('Prenotazione non trovata', 'Non risulta nessuna prenotazione associata a questo link.', '#a1491d');
+    if (!reservation) return Response.json({ ok: false, code: 'notfound' });
 
-    const apiKey = secrets.get('RESEND_API_KEY');
+    const prettyDate = new Date(reservation.date).toLocaleDateString('it-IT', { weekday: 'long', day: 'numeric', month: 'long' });
 
     if (action === 'confirm') {
       if (reservation.status === 'confirmed') {
-        return page('Già confermata', 'Questa prenotazione risulta già confermata. Nessuna modifica necessaria.', '#3f7d4a');
+        return Response.json({ ok: true, code: 'already_confirmed', reservation, prettyDate });
       }
       if (reservation.status === 'cancelled') {
-        return page('Prenotazione rifiutata', 'Questa prenotazione era stata rifiutata. Se vuoi confermarla, ricrea la richiesta dal sito.', '#a1491d');
+        return Response.json({ ok: false, code: 'was_cancelled' });
       }
       await base44.asServiceRole.entities.Reservation.update(id, { status: 'confirmed' });
 
-      const prettyDate = new Date(reservation.date).toLocaleDateString('it-IT', { weekday: 'long', day: 'numeric', month: 'long' });
+      const apiKey = secrets.get('RESEND_API_KEY');
+      let emailSent = false;
       if (apiKey) {
         const clientHtml = `
           <div style="font-family: Georgia, serif; max-width:560px; margin:auto; color:#1c1a18;">
@@ -70,17 +50,19 @@ export default async function(req) {
             </p>
             <p>Ti aspettiamo! Per qualsiasi modifica contattaci al +39 335 5845810.</p>
           </div>`;
-        await sendEmail(apiKey, { to: reservation.email, subject: 'Prenotazione confermata — Arco', html: clientHtml });
+        const res = await sendEmail(apiKey, { to: reservation.email, subject: 'Prenotazione confermata — Arco', html: clientHtml });
+        emailSent = res.ok;
       }
-      return page('Prenotazione confermata', `Hai confermato la prenotazione di <strong>${reservation.name}</strong> per ${reservation.guests} persone il ${prettyDate} alle ${reservation.time}.<br>Una email di conferma è stata inviata a ${reservation.email}.`, '#3f7d4a');
-    } else {
-      if (reservation.status === 'cancelled') {
-        return page('Già rifiutata', 'Questa prenotazione risulta già rifiutata.', '#a1491d');
-      }
-      await base44.asServiceRole.entities.Reservation.update(id, { status: 'cancelled' });
-      return page('Prenotazione rifiutata', `La richiesta di <strong>${reservation.name}</strong> è stata rifiutata. Puoi eventualmente contattare il cliente al ${reservation.phone}.`, '#a1491d');
+      return Response.json({ ok: true, code: 'confirmed', reservation, prettyDate, emailSent });
     }
+
+    // cancel
+    if (reservation.status === 'cancelled') {
+      return Response.json({ ok: true, code: 'already_cancelled', reservation });
+    }
+    await base44.asServiceRole.entities.Reservation.update(id, { status: 'cancelled' });
+    return Response.json({ ok: true, code: 'cancelled', reservation });
   } catch (error) {
-    return page('Errore', 'Si è verificato un errore durante la conferma: ' + error.message, '#a1491d');
+    return Response.json({ ok: false, code: 'error', message: error.message });
   }
 }
