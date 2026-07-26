@@ -10,7 +10,7 @@ export default function Footer() {
       <div className="mx-auto max-w-7xl px-6 py-16 grid gap-12 md:grid-cols-3">
         <div>
           <div className="flex items-center gap-3 mb-4">
-            <span className="flex h-10 w-10 items-center justify-center rounded-full border border-primary text-primary font-display text-lg">A</span>
+            <img src="https://media.base44.com/images/public/6a66623b13a5257cb6038200/041b27e58_IMG_2254.jpeg" alt="Arco logo" className="h-11 w-11 rounded-full object-cover" />
             <span className="font-display text-3xl">Arco</span>
           </div>
           <p className="text-background/70 leading-relaxed text-sm max-w-xs">

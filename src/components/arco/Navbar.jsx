@@ -1,6 +1,7 @@
 import React, { useState, useEffect } from 'react';
 import { Menu, X } from 'lucide-react';
 import { useReservation } from './ReservationContext';
+import { LOGO_IMG } from './data';
 
 const LINKS = [
   { label: 'La Trattoria', href: '#trattoria' },
@@ -34,12 +35,10 @@ export default function Navbar() {
     >
       <div className="mx-auto max-w-7xl px-6 flex items-center justify-between">
         <a href="#top" onClick={(e) => { e.preventDefault(); go('#top'); }} className="group flex items-center gap-3">
-          <span className="flex h-10 w-10 items-center justify-center rounded-full border border-primary/60 text-primary font-display text-lg leading-none">
-            A
-          </span>
-          <span className="font-display text-2xl tracking-wide text-foreground">
+          <img src={LOGO_IMG} alt="Arco logo" className="h-11 w-11 rounded-full object-cover shrink-0" />
+          <span className="font-display text-2xl tracking-wide text-foreground leading-none">
             Arco
-            <span className="block text-[0.6rem] tracking-[0.35em] uppercase text-muted-foreground font-body font-light">
+            <span className="block text-[0.6rem] tracking-[0.35em] uppercase text-muted-foreground font-body font-light mt-1">
               Trattoria con Vista
             </span>
           </span>

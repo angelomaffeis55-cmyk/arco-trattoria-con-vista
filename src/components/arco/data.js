@@ -6,6 +6,10 @@ export const TF_CUSTOMER = (id, w = 1200) =>
 
 export const HERO_IMG = "https://media.base44.com/images/public/6a66623b13a5257cb6038200/0795d1197_generated_1b8c1eb3.png";
 
+export const LOGO_IMG = "https://media.base44.com/images/public/6a66623b13a5257cb6038200/041b27e58_IMG_2254.jpeg";
+
+export const HERO_VIDEO = "https://media.base44.com/videos/public/6a66623b13a5257cb6038200/775df95b5_SnapInstato_AQN1Qn5s5cJs0Qa1izuMYe8-wWR50ZXFvrKQ_je7IMzo-M88qIpZBcDM7GCp0Bow7A3kzZry6Gxpowu_U8HXqpthGKsuDgH98fDc3q0.mp4";
+
 export const RESTAURANT = {
   name: "Arco",
   fullName: "Arco Trattoria con Vista",
