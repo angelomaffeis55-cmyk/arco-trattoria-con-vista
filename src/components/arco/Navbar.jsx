@@ -9,6 +9,7 @@ const LINKS = [
   { label: 'La Vista', href: '#vista' },
   { label: 'Recensioni', href: '#recensioni' },
   { label: 'Galleria', href: '#galleria' },
+  { label: 'Gift Card', href: '#gift-card' },
 ];
 
 export default function Navbar() {

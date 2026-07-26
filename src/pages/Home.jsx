@@ -7,6 +7,7 @@ import LivingMenu from '@/components/arco/LivingMenu';
 import Vista from '@/components/arco/Vista';
 import Reviews from '@/components/arco/Reviews';
 import Gallery from '@/components/arco/Gallery';
+import GiftCard from '@/components/arco/GiftCard';
 import Footer from '@/components/arco/Footer';
 import ReservationDrawer from '@/components/arco/ReservationDrawer';
 
@@ -22,6 +23,7 @@ export default function Home() {
           <Vista />
           <Reviews />
           <Gallery />
+          <GiftCard />
         </main>
         <Footer />
         <ReservationDrawer />
