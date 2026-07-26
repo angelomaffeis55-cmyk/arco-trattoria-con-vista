@@ -1,16 +1,16 @@
 import React from 'react';
 import { ChevronDown, MapPin } from 'lucide-react';
-import { LOGO_IMG, RESTAURANT } from './data';
+import { LOGO_IMG, HERO_DISH_IMG, RESTAURANT } from './data';
 import { useReservation } from './ReservationContext';
 
 export default function Hero() {
   const { openReservation } = useReservation();
   return (
     <section id="top" className="relative h-[100svh] min-h-[640px] w-full overflow-hidden">
-      {/* Background = the logo itself; its teal field fills the whole hero */}
+      {/* Background */}
       <div className="absolute inset-0">
-        <img src={LOGO_IMG} alt="" aria-hidden="true" className="h-full w-full object-cover" />
-        <div className="absolute inset-0 bg-gradient-to-b from-black/10 via-transparent to-background" />
+        <img src={HERO_DISH_IMG} alt="" aria-hidden="true" className="h-full w-full object-cover object-top" />
+        <div className="absolute inset-0 bg-gradient-to-b from-black/55 via-black/35 to-background" />
       </div>
 
       {/* Echo arch motif */}
