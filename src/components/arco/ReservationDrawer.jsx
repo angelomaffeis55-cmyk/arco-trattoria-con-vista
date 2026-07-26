@@ -1,23 +1,39 @@
 import React, { useState } from 'react';
-import { X, Calendar, Clock, Users, Check } from 'lucide-react';
+import { X, Calendar, Clock, Users, Check, Loader2 } from 'lucide-react';
 import { useReservation } from './ReservationContext';
 import { RESTAURANT } from './data';
+import { base44 } from '@/api/base44Client';
 
 export default function ReservationDrawer() {
   const { open, closeReservation } = useReservation();
   const [submitted, setSubmitted] = useState(false);
-  const [form, setForm] = useState({ date: '', time: '20:00', guests: '2', name: '', phone: '', note: '' });
+  const [loading, setLoading] = useState(false);
+  const [error, setError] = useState('');
+  const [form, setForm] = useState({ date: '', time: '20:00', guests: '2', name: '', email: '', phone: '', note: '' });
 
   const update = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
 
-  const submit = (e) => {
+  const submit = async (e) => {
     e.preventDefault();
-    setSubmitted(true);
+    setLoading(true);
+    setError('');
+    try {
+      await base44.functions.invoke('submitReservation', {
+        name: form.name, email: form.email, phone: form.phone,
+        date: form.date, time: form.time, guests: form.guests, notes: form.note
+      });
+      setSubmitted(true);
+    } catch (err) {
+      setError('Invio non riuscito. Riprova o chiamaci al ' + RESTAURANT.phone + '.');
+    } finally {
+      setLoading(false);
+    }
   };
 
   const reset = () => {
     setSubmitted(false);
-    setForm({ date: '', time: '20:00', guests: '2', name: '', phone: '', note: '' });
+    setError('');
+    setForm({ date: '', time: '20:00', guests: '2', name: '', email: '', phone: '', note: '' });
     closeReservation();
   };
 
@@ -101,6 +117,11 @@ export default function ReservationDrawer() {
                 className="w-full bg-transparent border-b border-border py-2 focus:border-primary outline-none placeholder:text-muted-foreground/50" />
             </Field>
 
+            <Field label="Email">
+              <input type="email" required value={form.email} onChange={update('email')} placeholder="mario@email.it"
+                className="w-full bg-transparent border-b border-border py-2 focus:border-primary outline-none placeholder:text-muted-foreground/50" />
+            </Field>
+
             <Field label="Telefono">
               <input type="tel" required value={form.phone} onChange={update('phone')} placeholder="+39 ..."
                 className="w-full bg-transparent border-b border-border py-2 focus:border-primary outline-none placeholder:text-muted-foreground/50" />
@@ -111,9 +132,12 @@ export default function ReservationDrawer() {
                 className="w-full bg-transparent border-b border-border py-2 focus:border-primary outline-none placeholder:text-muted-foreground/50 resize-none" />
             </Field>
 
-            <button type="submit"
-              className="w-full rounded-full bg-primary px-8 py-4 text-sm uppercase tracking-[0.2em] text-primary-foreground hover:bg-primary/90 transition-colors">
-              Richiedi prenotazione
+            {error && (
+              <p className="text-sm text-destructive text-center">{error}</p>
+            )}
+            <button type="submit" disabled={loading}
+              className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-primary px-8 py-4 text-sm uppercase tracking-[0.2em] text-primary-foreground hover:bg-primary/90 transition-colors disabled:opacity-60">
+              {loading ? <><Loader2 size={16} className="animate-spin" /> Invio in corso</> : 'Richiedi prenotazione'}
             </button>
             <p className="text-center text-xs text-muted-foreground">
               Oppure prenota direttamente su <a href={RESTAURANT.thefork} target="_blank" rel="noreferrer" className="text-primary underline">TheFork</a>

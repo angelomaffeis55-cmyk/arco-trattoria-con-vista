@@ -1,0 +1,76 @@
+{
+  "name": "Reservation",
+  "type": "object",
+  "properties": {
+    "name": {
+      "type": "string",
+      "title": "Nome e cognome"
+    },
+    "email": {
+      "type": "string",
+      "format": "email",
+      "title": "Email"
+    },
+    "phone": {
+      "type": "string",
+      "title": "Telefono"
+    },
+    "date": {
+      "type": "string",
+      "format": "date",
+      "title": "Data"
+    },
+    "time": {
+      "type": "string",
+      "title": "Ora"
+    },
+    "guests": {
+      "type": "string",
+      "title": "Ospiti"
+    },
+    "notes": {
+      "type": "string",
+      "title": "Note"
+    },
+    "status": {
+      "type": "string",
+      "enum": [
+        "pending",
+        "confirmed",
+        "cancelled"
+      ],
+      "default": "pending",
+      "title": "Stato"
+    }
+  },
+  "required": [
+    "name",
+    "email",
+    "phone",
+    "date",
+    "time",
+    "guests"
+  ],
+  "rls": {
+    "read": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "create": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "update": {
+      "user_condition": {
+        "role": "admin"
+      }
+    },
+    "delete": {
+      "user_condition": {
+        "role": "admin"
+      }
+    }
+  }
+}
