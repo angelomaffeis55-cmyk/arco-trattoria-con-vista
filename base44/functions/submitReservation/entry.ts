@@ -1,5 +1,6 @@
 import { createClientFromRequest } from 'npm:@base44/sdk@0.8.40';
 import { secrets } from 'base44:runtime';
+import { signReservationId } from '../../shared/reservationToken.ts';
 
 const RESEND_ENDPOINT = 'https://api.resend.com/emails';
 // Mittente di prova Resend: consegna solo all'email con cui ti sei iscritto a Resend.
@@ -35,6 +36,12 @@ export default async function(req) {
 
     const prettyDate = new Date(date).toLocaleDateString('it-IT', { weekday: 'long', day: 'numeric', month: 'long' });
 
+    // Link di conferma/rifiuto firmati per il proprietario
+    const token = await signReservationId(reservation.id);
+    const base = req.headers.get('origin') || new URL(req.url).origin;
+    const confirmLink = `${base}/functions/confirmReservation?id=${reservation.id}&t=${token}&action=confirm`;
+    const cancelLink = `${base}/functions/confirmReservation?id=${reservation.id}&t=${token}&action=cancel`;
+
     // Notifica al proprietario
     const ownerHtml = `
       <div style="font-family: Georgia, serif; max-width:560px; margin:auto; color:#1c1a18;">
@@ -49,7 +56,11 @@ export default async function(req) {
           ${row('Ospiti', guests)}
           ${row('Note', notes || '—')}
         </table>
-        <p style="margin-top:24px; font-size:13px; color:#6b6356;">Ricordati di confermare la prenotazione contattando il cliente.</p>
+        <div style="margin-top:28px;">
+          <p style="font-size:13px; color:#6b6356;">Conferma la prenotazione? Verrà inviata automaticamente un'email di conferma al cliente.</p>
+          <a href="${confirmLink}" style="display:inline-block; background:#a1491d; color:#f9f7f2; text-decoration:none; padding:14px 28px; border-radius:9999px; font-family:sans-serif; font-size:14px; font-weight:bold; margin:8px 8px 8px 0;">Conferma prenotazione</a>
+          <a href="${cancelLink}" style="display:inline-block; background:#f9f7f2; color:#1c1a18; border:1px solid #d8d2c8; text-decoration:none; padding:14px 28px; border-radius:9999px; font-family:sans-serif; font-size:14px;">Rifiuta</a>
+        </div>
       </div>`;
 
     // Conferma al cliente
