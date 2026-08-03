@@ -1,20 +1,17 @@
 import React, { useState } from 'react';
-import { Gift, Sparkles, Check, ChevronRight } from 'lucide-react';
+import { Gift, Sparkles, Check, ChevronRight, Clock } from 'lucide-react';
 import {
   Dialog, DialogContent, DialogHeader, DialogTitle, DialogDescription, DialogFooter, DialogClose
 } from '@/components/ui/dialog';
-import { HERO_DISH_IMG, LOGO_IMG } from './data';
+import { HERO_DISH_IMG, GALLERY } from './data';
 
-const AMOUNTS = [50, 100, 150, 250];
+const VOUCHER_PRICE = 80;
 
 export default function GiftCard() {
-  const [amount, setAmount] = useState(100);
-  const [custom, setCustom] = useState('');
   const [open, setOpen] = useState(false);
   const [form, setForm] = useState({ buyerName: '', buyerEmail: '', recipientName: '', recipientEmail: '', message: '' });
   const [sent, setSent] = useState(false);
 
-  const value = custom ? Math.max(10, Number(custom) || 0) : amount;
   const update = (k) => (e) => setForm((f) => ({ ...f, [k]: e.target.value }));
 
   const submit = (e) => {
@@ -41,76 +38,71 @@ export default function GiftCard() {
             Un regalo con vista
           </h2>
           <p className="mt-5 max-w-xl mx-auto text-foreground/70 leading-relaxed text-balance">
-            Regala un'esperienza alla trattoria: una cena tra le prealpi Orobiche. Scegli l'importo,
-            personalizza il messaggio e inviamo la gift card digitale al destinatario.
+            Regala un'esperienza alla trattoria, tra le prealpi Orobiche. Scegli il buono
+            o prenota la cena romantica nel maso.
           </p>
         </div>
 
-        <div className="grid lg:grid-cols-2 gap-14 items-center">
-          {/* Card preview */}
-          <div className="relative mx-auto w-full max-w-md">
-            <div className="arch-frame overflow-hidden shadow-2xl relative aspect-[4/5]">
-              <img src={HERO_DISH_IMG} alt="Gift card Arco" className="absolute inset-0 h-full w-full object-cover" />
-              <div className="absolute inset-0 bg-gradient-to-t from-black/75 via-black/35 to-black/10" />
-              <div className="relative h-full flex flex-col justify-between p-7 text-white">
-                <div className="flex items-center gap-3">
-                  <img src={LOGO_IMG} alt="" className="h-9 w-9 rounded-full object-cover" />
-                  <span className="font-display text-2xl">Arco</span>
-                </div>
-                <div>
-                  <p className="text-[0.65rem] uppercase tracking-[0.35em] text-white/70">Gift Card</p>
-                  <p className="font-display text-5xl mt-1">€{value}</p>
-                  {form.recipientName && (
-                    <p className="text-white/85 text-sm mt-3">Per {form.recipientName}</p>
-                  )}
-                </div>
-              </div>
+        <div className="grid md:grid-cols-2 gap-8">
+          {/* Buono Regalo 80€ — Cena per due */}
+          <article className="group flex flex-col overflow-hidden rounded-3xl bg-card border border-border shadow-[0_8px_30px_rgba(0,0,0,0.04)]">
+            <div className="relative h-56 overflow-hidden">
+              <img src={HERO_DISH_IMG} alt="Buono regalo Arco" className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/60 to-transparent" />
+              <span className="absolute top-4 left-4 rounded-full bg-primary px-4 py-1.5 text-xs uppercase tracking-[0.18em] text-primary-foreground">Buono Regalo</span>
             </div>
-          </div>
-
-          {/* Selector */}
-          <div>
-            <p className="text-xs uppercase tracking-[0.3em] text-muted-foreground mb-4">Scegli l'importo</p>
-            <div className="flex flex-wrap gap-3">
-              {AMOUNTS.map((a) => (
+            <div className="p-7 flex flex-col flex-1">
+              <h3 className="font-display text-3xl">Cena per due</h3>
+              <p className="mt-2 text-foreground/70 text-sm leading-relaxed">
+                Un buono regalo digitale da €{VOUCHER_PRICE} per una cena per due persone, valido su tutto il menù.
+              </p>
+              <div className="mt-5 space-y-2.5 text-foreground/75 text-sm">
+                <Feature>Messaggio personalizzato per il destinatario</Feature>
+                <Feature>Consegna digitale via email, pronta da stampare</Feature>
+                <Feature>Validità 12 mesi su tutto il menù</Feature>
+              </div>
+              <div className="mt-6 flex items-center justify-between">
+                <span className="font-display text-4xl">€{VOUCHER_PRICE}</span>
                 <button
-                  key={a}
-                  onClick={() => { setAmount(a); setCustom(''); }}
-                  className={`px-7 py-4 rounded-full text-lg font-display transition-all ${
-                    !custom && amount === a
-                      ? 'bg-primary text-primary-foreground shadow-lg'
-                      : 'bg-background border border-border hover:border-primary text-foreground'
-                  }`}
+                  onClick={() => setOpen(true)}
+                  className="inline-flex items-center gap-2 rounded-full bg-foreground px-7 py-3.5 text-xs uppercase tracking-[0.22em] text-background hover:bg-foreground/90 transition-colors"
                 >
-                  €{a}
+                  Acquista <ChevronRight size={15} />
                 </button>
-              ))}
-              <div className="relative">
-                <input
-                  type="number"
-                  min={10}
-                  value={custom}
-                  onChange={(e) => setCustom(e.target.value)}
-                  placeholder="Altro"
-                  className="w-32 px-5 py-4 rounded-full bg-background border border-border focus:border-primary outline-none font-display text-lg placeholder:font-body placeholder:text-sm placeholder:text-muted-foreground/60"
-                />
-                <span className="absolute right-4 top-1/2 -translate-y-1/2 text-muted-foreground pointer-events-none">€</span>
               </div>
             </div>
+          </article>
 
-            <div className="mt-10 space-y-3.5 text-foreground/75 text-sm">
-              <Feature>Messaggio personalizzato per il destinatario</Feature>
-              <Feature>Consegna digitale via email, pronta da stampare</Feature>
-              <Feature>Validità 12 mesi su tutto il menù</Feature>
+          {/* Cena Romantica nel Maso — Coming soon */}
+          <article className="group relative flex flex-col overflow-hidden rounded-3xl bg-card border border-border shadow-[0_8px_30px_rgba(0,0,0,0.04)]">
+            <div className="relative h-56 overflow-hidden">
+              <img src={GALLERY[0]} alt="Cena romantica nel maso" className="h-full w-full object-cover transition-transform duration-700 group-hover:scale-105" />
+              <div className="absolute inset-0 bg-gradient-to-t from-black/70 to-black/10" />
+              <span className="absolute top-4 left-4 inline-flex items-center gap-1.5 rounded-full bg-foreground/85 px-4 py-1.5 text-xs uppercase tracking-[0.18em] text-background">
+                <Clock size={12} /> Coming soon
+              </span>
             </div>
-
-            <button
-              onClick={() => setOpen(true)}
-              className="mt-10 inline-flex items-center gap-2 rounded-full bg-foreground px-9 py-4 text-xs uppercase tracking-[0.25em] text-background hover:bg-foreground/90 transition-colors"
-            >
-              Acquista online <ChevronRight size={16} />
-            </button>
-          </div>
+            <div className="p-7 flex flex-col flex-1">
+              <h3 className="font-display text-3xl">Cena Romantica nel Maso</h3>
+              <p className="mt-2 text-foreground/70 text-sm leading-relaxed">
+                Una serata intima nel nostro maso storico: menu dedicato, calice di benvenuto e atmosfera unica per due.
+              </p>
+              <div className="mt-5 space-y-2.5 text-foreground/75 text-sm">
+                <Feature>Esperienza esclusiva nel maso</Feature>
+                <Feature>Menu degustazione per due</Feature>
+                <Feature>Prenotazione dedicata</Feature>
+              </div>
+              <div className="mt-6 flex items-center justify-between">
+                <span className="text-xs uppercase tracking-[0.22em] text-muted-foreground">Prossimamente</span>
+                <button
+                  disabled
+                  className="inline-flex items-center gap-2 rounded-full bg-muted px-7 py-3.5 text-xs uppercase tracking-[0.22em] text-muted-foreground cursor-not-allowed"
+                >
+                  Coming soon
+                </button>
+              </div>
+            </div>
+          </article>
         </div>
       </div>
 
@@ -123,7 +115,7 @@ export default function GiftCard() {
               </div>
               <DialogTitle className="font-display text-3xl mb-3">Grazie, {form.buyerName || 'grazie'}!</DialogTitle>
               <DialogDescription className="text-muted-foreground leading-relaxed">
-                La tua gift card di <strong className="text-foreground">€{value}</strong> è stata registrata.
+                Il tuo buono regalo di <strong className="text-foreground">€{VOUCHER_PRICE}</strong> (cena per due) è stato registrato.
                 Stiamo attivando i pagamenti online sul sito: riceverai subito il link per completare l'acquisto.
               </DialogDescription>
               <DialogClose asChild>
@@ -138,9 +130,9 @@ export default function GiftCard() {
           ) : (
             <form onSubmit={submit}>
               <DialogHeader>
-                <DialogTitle className="font-display text-2xl">Regala una gift card</DialogTitle>
+                <DialogTitle className="font-display text-2xl">Buono regalo · Cena per due</DialogTitle>
                 <DialogDescription>
-                  Importo selezionato: <strong className="text-foreground">€{value}</strong>
+                  Importo: <strong className="text-foreground">€{VOUCHER_PRICE}</strong>
                 </DialogDescription>
               </DialogHeader>
               <div className="mt-5 space-y-4">

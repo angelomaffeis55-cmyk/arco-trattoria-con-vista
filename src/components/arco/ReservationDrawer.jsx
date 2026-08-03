@@ -139,9 +139,6 @@ export default function ReservationDrawer() {
               className="w-full inline-flex items-center justify-center gap-2 rounded-full bg-primary px-8 py-4 text-sm uppercase tracking-[0.2em] text-primary-foreground hover:bg-primary/90 transition-colors disabled:opacity-60">
               {loading ? <><Loader2 size={16} className="animate-spin" /> Invio in corso</> : 'Richiedi prenotazione'}
             </button>
-            <p className="text-center text-xs text-muted-foreground">
-              Oppure prenota direttamente su <a href={RESTAURANT.thefork} target="_blank" rel="noreferrer" className="text-primary underline">TheFork</a>
-            </p>
           </form>
         )}
       </aside>
