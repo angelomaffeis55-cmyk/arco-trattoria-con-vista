@@ -56,16 +56,6 @@ export default function Reviews() {
           ))}
         </div>
 
-        <div className="text-center mt-12">
-          <a
-            href={RESTAURANT.thefork}
-            target="_blank"
-            rel="noreferrer"
-            className="inline-flex items-center rounded-full border border-primary px-8 py-4 text-sm uppercase tracking-[0.2em] text-primary hover:bg-primary hover:text-primary-foreground transition-colors"
-          >
-            Vedi tutte su TheFork
-          </a>
-        </div>
       </div>
     </section>
   );

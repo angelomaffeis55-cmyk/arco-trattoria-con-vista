@@ -20,6 +20,8 @@
     --muted-foreground: 20 5% 40%;
     --accent: 82 10% 40%;
     --accent-foreground: 40 33% 96%;
+    --brand: 205 50% 53%;
+    --brand-foreground: 40 33% 96%;
     --destructive: 0 84% 60%;
     --destructive-foreground: 0 0% 98%;
     --border: 30 15% 88%;
@@ -47,6 +49,8 @@
     --muted-foreground: 40 15% 70%;
     --accent: 82 10% 50%;
     --accent-foreground: 40 33% 96%;
+    --brand: 205 50% 53%;
+    --brand-foreground: 40 33% 96%;
     --destructive: 0 62% 40%;
     --destructive-foreground: 0 0% 98%;
     --border: 20 4% 22%;

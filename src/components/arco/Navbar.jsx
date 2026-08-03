@@ -6,10 +6,10 @@ import { LOGO_IMG } from './data';
 const LINKS = [
   { label: 'La Trattoria', href: '#trattoria' },
   { label: 'Menu', href: '#menu' },
-  { label: 'La Vista', href: '#vista' },
-  { label: 'Recensioni', href: '#recensioni' },
+  { label: 'Cerimonie', href: '#cerimonie' },
+  { label: 'Eventi', href: '#eventi' },
   { label: 'Galleria', href: '#galleria' },
-  { label: 'Gift Card', href: '#gift-card' },
+  { label: 'Gift', href: '#gift-card' },
 ];
 
 export default function Navbar() {
@@ -30,16 +30,16 @@ export default function Navbar() {
 
   return (
     <header
-      className={`fixed top-0 inset-x-0 z-50 transition-all duration-500 ${
-        scrolled ? 'glass shadow-[0_1px_0_rgba(0,0,0,0.06)] py-3' : 'bg-transparent py-5'
+      className={`fixed top-0 inset-x-0 z-50 transition-all duration-500 bg-brand text-white ${
+        scrolled ? 'shadow-[0_1px_0_rgba(0,0,0,0.12)] py-3' : 'py-5'
       }`}
     >
       <div className="mx-auto max-w-7xl px-6 flex items-center justify-between">
         <a href="#top" onClick={(e) => { e.preventDefault(); go('#top'); }} className="group flex items-center gap-3">
-          <img src={LOGO_IMG} alt="Arco logo" className="h-11 w-11 rounded-full object-cover shrink-0" />
-          <span className="font-display text-2xl tracking-wide text-foreground leading-none">
+          <img src={LOGO_IMG} alt="Arco logo" className="h-11 w-11 rounded-full object-cover shrink-0 ring-2 ring-white/40" />
+          <span className="font-display text-2xl tracking-wide text-white leading-none">
             Arco
-            <span className="block text-[0.6rem] tracking-[0.35em] uppercase text-muted-foreground font-body font-light mt-1">
+            <span className="block text-[0.6rem] tracking-[0.35em] uppercase text-white/70 font-body font-light mt-1">
               Trattoria con Vista
             </span>
           </span>
@@ -50,7 +50,7 @@ export default function Navbar() {
             <button
               key={l.href}
               onClick={() => go(l.href)}
-              className="relative text-sm uppercase tracking-[0.18em] text-foreground/80 hover:text-primary transition-colors after:absolute after:-bottom-1.5 after:left-0 after:h-px after:w-0 after:bg-primary after:transition-all hover:after:w-full"
+              className="relative text-sm uppercase tracking-[0.18em] text-white/85 hover:text-white transition-colors after:absolute after:-bottom-1.5 after:left-0 after:h-px after:w-0 after:bg-white after:transition-all hover:after:w-full"
             >
               {l.label}
             </button>
@@ -65,7 +65,7 @@ export default function Navbar() {
             Prenota
           </button>
           <button
-            className="lg:hidden inline-flex h-10 w-10 items-center justify-center text-foreground"
+            className="lg:hidden inline-flex h-10 w-10 items-center justify-center text-white"
             onClick={() => setMenuOpen((v) => !v)}
             aria-label="Menu"
           >
@@ -77,7 +77,7 @@ export default function Navbar() {
       {/* Mobile menu */}
       <div
         className={`lg:hidden overflow-hidden transition-all duration-400 ${
-          menuOpen ? 'max-h-96 glass' : 'max-h-0'
+          menuOpen ? 'max-h-96 bg-brand' : 'max-h-0'
         }`}
       >
         <nav className="px-6 py-4 flex flex-col gap-1">
@@ -85,7 +85,7 @@ export default function Navbar() {
             <button
               key={l.href}
               onClick={() => go(l.href)}
-              className="text-left py-3 text-base uppercase tracking-[0.18em] text-foreground/80 border-b border-border/60"
+              className="text-left py-3 text-base uppercase tracking-[0.18em] text-white/85 border-b border-white/20"
             >
               {l.label}
             </button>

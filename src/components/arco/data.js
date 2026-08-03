@@ -23,7 +23,6 @@ export const RESTAURANT = {
   phoneHref: "tel:+393355845810",
   instagram: "https://www.instagram.com/arco_trattoria_con_vista/",
   instagramHandle: "@arco_trattoria_con_vista",
-  thefork: "https://www.thefork.it/ristorante/arco-trattoria-con-vista-r856812",
   mapsUrl: "https://www.google.com/maps/search/?api=1&query=Arco+Trattoria+con+Vista+Via+Santuario+di+Altino+64+Albino",
   rating: "9,5",
   reviewsCount: 188,
